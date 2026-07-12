@@ -1,0 +1,28 @@
+# Blueprint Render — déploie la passerelle + une base PostgreSQL managée.
+# Utilisation : pousser ce dépôt sur GitHub, puis sur Render :
+#   New + → Blueprint → sélectionner le dépôt → Apply.
+# Render lit ce fichier, crée le service web ET la base, et les relie.
+
+services:
+  - type: web
+    name: cfc-formulaire
+    runtime: python
+    plan: free                     # passer à 'starter' (~7$/mois) pour supprimer la mise en veille
+    region: frankfurt              # le plus proche du Cameroun proposé par Render
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn -w 2 --threads 4 -b 0.0.0.0:$PORT app_public:app"
+    healthCheckPath: /api/sante
+    envVars:
+      - key: SYNC_TOKEN
+        generateValue: true        # Render génère un jeton fort ; à copier dans CAPTURE_TOKEN côté app interne
+      - key: RATE_SOUMISSION
+        value: "5 per hour"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cfc-soumissions-db
+          property: connectionString
+
+databases:
+  - name: cfc-soumissions-db
+    plan: free                     # ⚠️ base gratuite Render expire après 30 j — passer en payant pour la prod
+    region: frankfurt

@@ -1,0 +1,10 @@
+Flask>=3.0
+# Chargement du fichier .env :
+python-dotenv>=1.0
+# Limitation de débit anti-spam (recommandé en production) :
+Flask-Limiter>=3.5
+# Serveur WSGI de production :
+gunicorn>=21.0
+# Pilote PostgreSQL — utilisé automatiquement si DATABASE_URL est défini
+# (plateformes managées type Render/Railway). Inutile en SQLite local.
+psycopg[binary]>=3.1

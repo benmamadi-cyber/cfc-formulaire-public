@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crédit Foncier du Cameroun — Enregistrement de votre intérêt</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="cfc-header">
+    <div class="cfc-header-inner">
+      <div class="cfc-logo">CFC</div>
+      <div>
+        <div class="cfc-titre">Crédit Foncier du Cameroun</div>
+        <div class="cfc-sous-titre">Enregistrement de votre intérêt — projet immobilier</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="cfc-main">
+    <p class="intro">
+      Renseignez ce formulaire pour nous faire part de votre projet.
+      Un chargé de clientèle de l'agence compétente vous recontactera.
+      Les champs marqués <span class="req">*</span> sont obligatoires.
+    </p>
+
+    <form id="form-prospect" novalidate>
+      <!-- Honeypot anti-bot : ne pas remplir, masqué -->
+      <div class="hp"><label>Ne pas remplir<input type="text" name="site_web_confirm" tabindex="-1" autocomplete="off"></label></div>
+
+      <!-- 1. Identité -->
+      <fieldset>
+        <legend>1. Votre identité</legend>
+        <div class="grid">
+          <label>Nom <span class="req">*</span>
+            <input type="text" name="nom" required maxlength="80">
+          </label>
+          <label>Prénom <span class="req">*</span>
+            <input type="text" name="prenom" required maxlength="80">
+          </label>
+          <label>Téléphone <span class="req">*</span>
+            <input type="tel" name="telephone" required placeholder="6XXXXXXXX" inputmode="numeric" maxlength="9">
+            <small class="hint">Format : 6 suivi de 8 chiffres</small>
+          </label>
+          <label class="chk-inline">
+            <input type="checkbox" name="tel1_whatsapp" value="1"> Ce numéro est sur WhatsApp
+          </label>
+          <label>Téléphone secondaire
+            <input type="tel" name="telephone2" placeholder="6XXXXXXXX" inputmode="numeric" maxlength="9">
+          </label>
+          <label class="chk-inline">
+            <input type="checkbox" name="tel2_whatsapp" value="1"> Ce numéro est sur WhatsApp
+          </label>
+          <label>Adresse e-mail
+            <input type="email" name="email" maxlength="120" placeholder="vous@exemple.com">
+          </label>
+          <label>Nationalité
+            <input type="text" name="nationalite" value="Camerounaise" maxlength="60">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 2. Résidence -->
+      <fieldset>
+        <legend>2. Votre lieu de résidence</legend>
+        <div class="grid">
+          <label>Pays de résidence
+            <select name="pays_residence_code" id="pays">
+              {% for p in pays %}<option value="{{ p.code }}" {% if p.code=='CM' %}selected{% endif %}>{{ p.fr }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Région (si Cameroun)
+            <select name="region" id="region-res"><option value="">— Choisir —</option>
+              {% for r in regions %}<option value="{{ r }}">{{ r }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Ville
+            <input type="text" name="ville" id="ville-res" list="villes-res" maxlength="80">
+            <datalist id="villes-res"></datalist>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 3. Centres d'intérêt -->
+      <fieldset>
+        <legend>3. Que souhaitez-vous ? <span class="req">*</span></legend>
+        <div class="centres">
+          <label class="carte-chk"><input type="checkbox" name="centre_pret" id="c-pret" value="1"> <span>Un <strong>prêt</strong> immobilier</span></label>
+          <label class="carte-chk"><input type="checkbox" name="centre_epargne" id="c-epargne" value="1"> <span>Un produit d'<strong>épargne</strong> logement</span></label>
+        </div>
+      </fieldset>
+
+      <!-- 4. Projet / Prêt -->
+      <fieldset id="bloc-pret" hidden>
+        <legend>4. Votre projet à financer</legend>
+        <div class="grid">
+          <label>Opération à financer
+            <select name="operation_a_financer">
+              <option value="">— Choisir —</option>
+              {% for o in operations %}<option value="{{ o }}">{{ o }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Montant du prêt souhaité (FCFA)
+            <input type="text" name="montant_pret_souhaite" inputmode="numeric" placeholder="ex. 25 000 000">
+          </label>
+          <label>Région du lieu de votre projet <span class="req">*</span>
+            <select name="lieu_construction_region" id="region-projet">
+              <option value="">— Choisir —</option>
+              {% for r in regions %}<option value="{{ r }}">{{ r }}</option>{% endfor %}
+            </select>
+            <small class="hint">Détermine l'agence CFC qui traitera votre demande</small>
+          </label>
+          <label>Ville du projet
+            <input type="text" name="lieu_construction_ville" id="ville-projet" list="villes-projet" maxlength="80">
+            <datalist id="villes-projet"></datalist>
+          </label>
+          <label class="col-2">Décrivez votre besoin
+            <textarea name="description_besoin" rows="3" maxlength="1000"></textarea>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 5. Épargne -->
+      <fieldset id="bloc-epargne" hidden>
+        <legend>5. Votre projet d'épargne</legend>
+        <div class="grid">
+          <label>Versement initial (FCFA)
+            <input type="text" name="epargne_versement_initial" inputmode="numeric">
+          </label>
+          <label>Périodicité
+            <select name="epargne_periodicite">
+              <option value="">— Choisir —</option>
+              <option>Mensuelle</option><option>Trimestrielle</option>
+              <option>Semestrielle</option><option>Annuelle</option>
+            </select>
+          </label>
+          <label>Montant périodique (FCFA)
+            <input type="text" name="epargne_montant_periodique" inputmode="numeric">
+          </label>
+          <label>Durée de blocage (mois)
+            <input type="number" name="epargne_duree_blocage" min="0" max="600">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 6. Situation professionnelle (optionnel) -->
+      <fieldset>
+        <legend>6. Situation professionnelle <span class="opt">(facultatif)</span></legend>
+        <div class="grid">
+          <label>Profession<input type="text" name="profession" maxlength="80"></label>
+          <label>Employeur<input type="text" name="employeur" maxlength="120"></label>
+        </div>
+      </fieldset>
+
+      <!-- 7. Rendez-vous -->
+      <fieldset>
+        <legend>7. Souhaitez-vous être recontacté pour un rendez-vous ?</legend>
+        <label class="chk-inline"><input type="checkbox" name="rdv_souhaite" id="rdv-chk" value="1"> Oui, je souhaite un rendez-vous</label>
+        <div class="grid" id="bloc-rdv" hidden>
+          <label>Moyen préféré
+            <select name="rdv_souhaite_moyen">
+              <option value="">— Choisir —</option>
+              {% for m in moyens_rdv %}<option>{{ m }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Date souhaitée<input type="date" name="rdv_souhaite_date"></label>
+          <label>Heure souhaitée<input type="time" name="rdv_souhaite_heure"></label>
+        </div>
+      </fieldset>
+
+      <!-- 8. Commentaire -->
+      <fieldset>
+        <legend>8. Un message pour nous ? <span class="opt">(facultatif)</span></legend>
+        <textarea name="commentaire" rows="3" maxlength="1000" class="col-2"></textarea>
+      </fieldset>
+
+      <div id="form-erreur" class="alert-erreur" hidden></div>
+
+      <div class="actions">
+        <button type="submit" id="btn-envoyer">Envoyer ma demande</button>
+      </div>
+      <p class="rgpd">
+        Vos données sont transmises au Crédit Foncier du Cameroun pour le
+        traitement de votre demande, conformément à la réglementation en vigueur.
+      </p>
+    </form>
+
+    <!-- Écran de confirmation -->
+    <div id="ecran-merci" hidden>
+      <div class="merci-carte">
+        <div class="merci-check">✓</div>
+        <h2>Merci, votre demande est enregistrée !</h2>
+        <p>Un chargé de clientèle de l'agence compétente vous recontactera.</p>
+        <p class="ref">Votre référence : <strong id="ref-valeur"></strong></p>
+        <p class="ref-hint">Conservez cette référence pour tout échange avec le CFC.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="cfc-footer">© Crédit Foncier du Cameroun</footer>
+
+  <script id="villes-data" type="application/json">{{ villes | tojson }}</script>
+  <script src="{{ url_for('static', filename='form.js') }}"></script>
+</body>
+</html>

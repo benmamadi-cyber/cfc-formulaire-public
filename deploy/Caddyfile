@@ -1,0 +1,18 @@
+# Alternative à Nginx : Caddy gère le TLS Let's Encrypt automatiquement.
+# Installer Caddy, placer ce fichier en /etc/caddy/Caddyfile, puis :
+#   sudo systemctl reload caddy
+# Remplacer le domaine par le vôtre.
+
+formulaire.creditfoncier.cm {
+    encode gzip
+    header {
+        X-Frame-Options DENY
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    }
+    request_body {
+        max_size 1MB
+    }
+    reverse_proxy 127.0.0.1:8080
+}
