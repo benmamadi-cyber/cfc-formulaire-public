@@ -5,18 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Crédit Foncier du Cameroun — Enregistrement de votre intérêt</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="icon" href="{{ url_for('static', filename='logo-cfc.jpeg') }}" type="image/jpeg">
+  <link rel="icon" href="{{ url_for('static', filename='logo-cfc.png') }}" type="image/png">
 </head>
 <body>
   <header class="cfc-header">
     <div class="cfc-header-inner">
       <div class="cfc-logo">
-        <img src="{{ url_for('static', filename='logo-cfc.jpeg') }}" alt="Crédit Foncier du Cameroun">
+        <img src="{{ url_for('static', filename='logo-cfc.png') }}" alt="Crédit Foncier du Cameroun">
       </div>
-      <div>
-        <div class="cfc-titre">Crédit Foncier du Cameroun</div>
-        <div class="cfc-sous-titre">Enregistrement de votre intérêt — projet immobilier</div>
-      </div>
+      <div class="cfc-sous-titre">Enregistrement de votre intérêt</div>
     </div>
   </header>
 
@@ -200,9 +197,12 @@
     </div>
   </main>
 
-  <footer class="cfc-footer">© Crédit Foncier du Cameroun</footer>
+  <footer class="cfc-footer">© Crédit Foncier du Cameroun
+    <span class="credit-photo">Photo : Matovu Trevor, CC BY-SA 4.0, Wikimedia Commons</span>
+  </footer>
 
   <script id="villes-data" type="application/json">{{ villes | tojson }}</script>
   <script src="{{ url_for('static', filename='form.js') }}"></script>
+  <script src="{{ url_for('static', filename='deco.js') }}"></script>
 </body>
 </html>
